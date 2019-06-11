@@ -1,0 +1,48 @@
+{
+  "name": "products",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha ./test/test.js --timeout 10000 --exit",
+    "_comment": "Note: --exit in the test element is to force the test program to exit after finishing in case we use done()",
+    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test"
+  },
+  "nyc": {
+    "_comment": "Purpose of this part: to do code coverage within Mocha/Chai using Istanbul",
+    "register": "babel-register",
+    "include": [
+      "**/*.js",
+      "./*.js"
+    ],
+    "exclude": [
+      "**/node_modules/**",
+      "**/test/**",
+      "**/coverage/**"
+    ],
+    "all": true
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "coveralls": "^3.0.3",
+    "expect": "^24.7.1",
+    "express": "^4.16.4",
+    "istanbul": "^0.4.5",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^6.1.4",
+    "node-mandrill": "^1.0.1",
+    "nodemailer": "^6.1.1",
+    "nodemon": "^1.18.11",
+    "nyc": "^14.0.0",
+    "path": "^0.12.7",
+    "should": "^13.2.3"
+  }
+}

@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            width: 70%;
+            font: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: solid 2px;
+            border-collapse: collapse;
+            padding: 2px, 3px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function addfn(event) {
+            var id = e.target.closest('tr').element.getAttribute('id');
+            console.log(id);
+        }
+        // function deltfn(event) {
+        //     //var id = document.getElementById('deltbt').parentElement.nodeName
+        //     var id = e.target.closest('tr').element.getAttribute('id');
+        //     console.log(id);
+        // }
+        function createTableRow(product) {
+            // console.log(product)
+            var productTable1 = document.getElementById("productTable");
+            var productTableBody = productTable1.querySelector("tbody");
+            for (var i = 0; i < product.length; i++) {
+                var productDt = product[i];
+                var trElements = '<tr data-product-id = "' + productDt.productId + '" >'
+                    // + '<td>' + productDt.productId + '</td>'
+                    + '<td class="product-name">' + productDt.productName + '</td>'
+                    // + '<td>' + productDt.MobileNo + '</td>'
+                    // + '<td>' + productDt.Email + '</td>'
+                    // + '<td>' + productDt.Password + '</td>'
+                    + '<td class="product-price">' + productDt.productPrice + '</td>'
+                    + '<td class="color">' + productDt.color + '</td>'
+                    + '<td class="released-date">' + productDt.ReleasedDate + '</td>'
+                    + '<td class="warranty">' + productDt.Warranty + '</td>'
+                    + '<td class="product-status">' + productDt.productStatus + '</td>'
+                    // + '<td><input type="button" onclick="deltfn(event)" value="delete"></td>'
+                    + '<td><input type="checkbox"  onclick="printChecked(event)" value="Selected items"></td>'
+                    + '</tr>';
+                productTableBody.innerHTML += trElements;
+            }
+        }
+    </script>
+    <script>
+        function printChecked(e) {
+            var closestTrElement = e.target.closest('tr');
+            var isChecked = e.target.checked;
+            if (isChecked == true) {
+
+                closestTrElement.classList.add('selected');
+            } else {
+                closestTrElement.classList.remove('selected');
+            }
+            // console.log(e.target.checked);
+            // console.log('closest ', closestTrElement);
+        }
+
+        function getTdValue(row, selector) {
+            return row.querySelector(selector).innerText;
+        }
+
+        var selectedItems = [];
+        function selectedValuesonSubmit(selectedRows) {
+            var productTable1 = document.getElementById("productTable");
+            var selectedRows = productTable1.querySelectorAll("tr.selected");
+            console.log(selectedRows);
+            
+            for (var i = 0; i < selectedRows.length; i++) {
+                var selectedRow = selectedRows[i];
+                var selectedRowData = {
+                    productName: getTdValue(selectedRow, 'td.product-name'),
+                    productPrice: getTdValue(selectedRow, 'td.product-price'),
+                    color: getTdValue(selectedRow, 'td.color'),
+                    releasedDate: getTdValue(selectedRow, 'td.released-date'),
+                    warranty: getTdValue(selectedRow, 'td.warranty'),
+                    productStatus: getTdValue(selectedRow, 'td.product-status')
+                };
+              
+                selectedItems.push(selectedRowData);
+                //return selectedItems;
+            }
+            console.log(selectedItems);
+        }
+        function jsonresponsesendonsubmit() {
+             const details = {};
+            details.selectedItems = selectedValuesonSubmit();
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                console.log("API Status ", this.status);
+                if (this.readyState == 4 && this.status == 200) {
+                    //document.getElementById('demo').innerHTML = this.responseText
+                    var details = JSON.parse(this.responseText);
+                    // console.log(details);
+                    //selectedValuesonSubmit(value);
+                }
+            }
+            xhr.open('POST', '/sendmail', true);
+            xhr.setRequestHeader('content-type', 'application/json');
+            //xhr.send(JSON.stringify(details));
+            xhr.send();
+        }
+        function getFunction() {
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // document.getElementById('demo').innerHTML = this.responseText
+                    var data = JSON.parse(this.responseText);
+                    //console.log(data);
+                    createTableRow(data);
+                }
+            }
+            xhr.open('GET', '/get', true);
+            xhr.send();
+        }
+    </script>
+</head>
+
+<body>
+    <div id="demo"></div>
+    <form name="form1" action="index.html" method="GET">
+        <input type="button" onclick="getFunction()" value="Add">
+        <input type="text"  placeholder="Email" id="Email">
+        <input type="button" onclick="jsonresponsesendonsubmit()" value="Submit">
+        <table id="productTable">
+            <thead>
+                <tr id="pr">
+                    <!-- <th>checkbox</th> -->
+                    <!-- <th>Product Id</th> -->
+                    <th>Product Name</th>
+                    <!-- <th>Mobile No</th> -->
+                    <!-- <th>Email</th> -->
+                    <!-- <th>Password</th> -->
+                    <th>Product Price</th>
+                    <th>Color</th>
+                    <th>Released Date</th>
+                    <th>Warranty</th>
+                    <th>Product Status</th>
+                    <th></th>
+                    <!-- <th id="deltbt"><input type="button" onclick="mydlt()" value="Delete"></th> -->
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
+    </form>
+</body>
+
+</html>
+<!-- function mydlt() {
+    const id = 1;
+    // const id = document.getElementById('dltid').value;
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById('demo').innerHTML = this.responseText
+        }
+    }
+    xhr.open('DELETE', `/delete?productId=${id}`, true);
+    xhr.send();
+} -->
+<!-- //    window.open('mailto:pavithra04ec@gmail.com')
+            //     var link = "mailto:pavithra04ec@gmail.com"
+            //         +"&subject=" + escape("this is my subject")
+            //         +"&body=" + escape("this is email content");
+            //         window.location.href = link;
+            //   showPrompt(HTML, function (value) {
+            //         alert(value);
+            //     });
+
+            // var txt;
+            // var email = prompt("please enter your email id", "");
+            // if (email == null && email == "") {
+            //     alert("user doesn't enter email");
+            // }
+            // else {
+            //     alert(email);
+            // function sendemail() {
+            // var email = document.getElementById("emailID").value;
+            // var subject = ('My permanent subject line');
+            // var body = ('My permanent body contents');
+            // document.write('<a href="mailto:' + 'pavithra04ec@gmail.com' + '?subject=' + subject + '&body=' + body + '">' + 'Click here to send email as well' + '<' + '/a>');
+
+            // }
+            //     document.write(sendEmail({
+            //     subject: "Hello, World!",
+            //     text: "This mail has been sent from the frontend",
+            //     to: ["pavithra04ec@gmail.com"]
+            // }));
+
+            // } -->
+<!-- function mypost() {
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById('demo').innerHTML = this.responseText
+                    }
+                }
+                xhr.open('POST', '/add', true);
+                xhr.setRequestHeader('content-type', 'application/json');
+                xhr.send(JSON.stringify(param));
+     -->
+     <!-- function mygetById() {
+        const id = 3;
+        //const id = document.getElementById('getid').value;
+        // console.log(id);
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                // document.getElementById('demo').innerHTML = this.responseText
+                var data = JSON.parse(this.responseText);
+                //console.log(data);
+                createTableRow(data);
+            }
+        }
+        xhr.open('GET', `/getById?productId=${id}`, true);
+        xhr.send();
+    } -->
+    
+    <!-- // function sendemail() {
+        //     var codeBlock = '<div class="content">' +
+        //         //  '<form action="" method="POST">' +
+        //         '<input type="email" name="Email" placeholder="Enter your Email">' +
+        //         '<input type="submit" onclick="myvalue()" value="send">' +
+        //         '</form>' +
+        //         '</div>';
+        //     document.getElementById("demo").innerHTML = codeBlock;
+        // } -->

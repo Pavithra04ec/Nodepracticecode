@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            width: 70%;
+            font: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: solid 2px;
+            border-collapse: collapse;
+            padding: 2px, 3px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function addfn(event) {
+            var id = e.target.closest('tr').element.getAttribute('id');
+            console.log(id);
+        }
+        // function deltfn(event) {
+        //     //var id = document.getElementById('deltbt').parentElement.nodeName
+        //     var id = e.target.closest('tr').element.getAttribute('id');
+        //     console.log(id);
+        // }
+        function createTableRow(product) {
+            console.log(product)
+            var productTable1 = document.getElementById("productTable");
+            var productTableBody = productTable1.querySelector("tbody");
+            for (var i = 0; i < product.length; i++) {
+                var productDt = product[i];
+                var trElements = '<tr data-product-id = "' + productDt.productId + '" >'
+                    // + '<td>' + productDt.productId + '</td>'
+                    + '<td>' + productDt.productName + '</td>'
+                    // + '<td>' + productDt.MobileNo + '</td>'
+                    // + '<td>' + productDt.Email + '</td>'
+                    // + '<td>' + productDt.Password + '</td>'
+                    + '<td>' + productDt.productPrice + '</td>'
+                    + '<td>' + productDt.color + '</td>'
+                    + '<td>' + productDt.ReleasedDate + '</td>'
+                    + '<td>' + productDt.Warranty + '</td>'
+                    + '<td>' + productDt.productStatus + '</td>'
+                    // + '<td><input type="button" onclick="deltfn(event)" value="delete"></td>'
+                    + '<td><input type="checkbox"  onclick="printChecked(event)" value="Selected items"></td>'
+                    + '</tr>';
+                productTableBody.innerHTML += trElements;
+            }
+        }
+    </script>
+    <script>
+        // function checkAddress() {
+        //     // fetching the checkbox by id 
+        //     var checkbox = document.getElementById("checkAddress");
+        //     // changing the state of checkbox to checked 
+        //     if(checkbox.checked == true){
+        //         alert("selected");
+        //     }
+
+        // } 
+        function printChecked(e) {
+        //     var checkbox = document.getElementById('check');
+        //     var selectedItems ="";
+        //     for (var i = 0; i < checkbox.length; i++) {
+        //         if (checkbox[i].checked == true)
+        //             selectedItems += checkbox[i].value + "\n";
+        //             //(checkbox.row( this.closest('tr') ).data() );
+        //     }
+        //     alert(selectedItems + checkbox[i]);
+        //    // alert(checkbox[i].value);
+            var closestTrElement = e.target.closest('tr');
+            var isChecked = e.target.checked;
+
+            if (isChecked) {
+                closestTrElement.classList.add('selected');
+            } else {
+                closestTrElement.classList.remove('selected');
+            }
+
+            console.log(e.target.checked);
+            console.log('closest ', closestTrElement);
+        }
+
+        function getTdValue(row, selector) {
+            return row.querySelector(selector).innerText;
+        }
+
+        function onSubmit() {
+            var productTable1 = document.getElementById("productTable");
+            var selectedRows = productTable1.querySelectorAll("tr.selected");
+
+            console.log(selectedRows);
+
+            var selectedItems = [];
+
+            for (var i = 0; i < selectedRows.length; i++) {
+                var selectedRow = selectedRows[i];
+                var selectedRowData = {
+                    productName: getTdValue(selectedRow, 'td.product-name'),
+                    productPrice: getTdValue(selectedRow, 'td.product-price'),
+                    color: getTdValue(selectedRow, 'td.color'),
+                    releasedDate: getTdValue(selectedRow, 'td.released-date'),
+                    warranty: getTdValue(selectedRow, 'td.warranty'),
+                    productStatus: getTdValue(selectedRow, 'td.product-status')
+                };
+
+                selectedItems.push(selectedRowData);
+            }
+
+            console.log(selectedItems);
+        }
+    </script>
+
+    <script>
+        function myget() {
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // document.getElementById('demo').innerHTML = this.responseText
+                    var data = JSON.parse(this.responseText);
+                    console.log(data);
+                    createTableRow(data);
+                }
+            }
+            xhr.open('GET', '/get', true);
+            xhr.send();
+        }
+        function mygetById() {
+            const id = 3;
+            //const id = document.getElementById('getid').value;
+            console.log(id);
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // document.getElementById('demo').innerHTML = this.responseText
+                    var data = JSON.parse(this.responseText);
+                    console.log(data);
+                    createTableRow(data);
+                }
+            }
+            xhr.open('GET', `/getById?productId=${id}`, true);
+            xhr.send();
+        }
+        function mydlt() {
+            const id = 1;
+            // const id = document.getElementById('dltid').value;
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('demo').innerHTML = this.responseText
+                }
+            }
+            xhr.open('DELETE', `/delete?productId=${id}`, true);
+            xhr.send();
+        }
+        // function mypost() {
+        //     const param = {
+        //         productId: document.getElementById('productId').value,
+        //         productName: document.getElementById('productName').value,
+        //         MobileNo: document.getElementById('MobileNo').value,
+        //         Email: document.getElementById('Email').value,
+        //         Password: document.getElementById('Password').value,
+        //         productPrice: document.getElementById('productPrice').value,
+        //         color: document.getElementById('color').value,
+        //         ReleasedDate: document.getElementById('ReleasedDate').value,
+        //         Warranty: document.getElementById('Warranty').value,
+        //         productStatus: document.getElementById('productStatus').value
+        //     }
+        //     const xhr = new XMLHttpRequest();
+        //     xhr.onreadystatechange = function () {
+        //         if (this.readyState == 4 && this.status == 200) {
+        //             document.getElementById('demo').innerHTML = this.responseText
+        //         }
+        //     }
+        //     xhr.open('POST', '/add', true);
+        //     xhr.setRequestHeader('content-type', 'application/json');
+        //     xhr.send(JSON.stringify(param));
+        // }
+    </script>
+</head>
+
+<body>
+    <input type="button" onclick="myget()" value="Add">
+    <input type="button" onclick="onSubmit()" value="Submit">
+    <table id="productTable">
+        <thead>
+            <tr id="pr">
+                <th></th>
+                <!-- <th>Product Id</th> -->
+                <th>Product Name</th>
+                <!-- <th>Mobile No</th> -->
+                <!-- <th>Email</th> -->
+                <!-- <th>Password</th> -->
+                <th>Product Price</th>
+                <th>Color</th>
+                <th>Released Date</th>
+                <th>Warranty</th>
+                <th>Product Status</th>
+                <!-- <th id="deltbt"><input type="button" onclick="mydlt()" value="Delete"></th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-product-id="1">
+                <td><input type="checkbox"  onclick="printChecked(event)" value="Selected items"></td>
+                <!-- <td>Product Id</td> -->
+                <td class="product-name">Product Name</td>
+                <!-- <td>Mobile No</td> -->
+                <!-- <td>Email</td> -->
+                <!-- <td>Password</td> -->
+                <td class="product-price">Product Price</td>
+                <td class="color">Color</td>
+                <td class="released-date">Released Date</td>
+                <td class="warranty">Warranty</td>
+                <td class="product-status">Product Status</td>
+                <!-- <td id="deltbt"><input type="button" onclick="mydlt()" value="Delete"></td> -->
+            </tr>
+            <tr data-product-id="2">
+                <td><input type="checkbox"  onclick="printChecked(event)" value="Selected items"></td>
+                <!-- <td>Product Id</td> -->
+                <td class="product-name">Product Name 2</td>
+                <!-- <td>Mobile No</td> -->
+                <!-- <td>Email</td> -->
+                <!-- <td>Password</td> -->
+                <td class="product-price">Product Price 2</td>
+                <td class="color">Color 2</td>
+                <td class="released-date">Released Date 2</td>
+                <td class="warranty">Warranty 2</td>
+                <td class="product-status">Product Status 2</td>
+                <!-- <td id="deltbt"><input type="button" onclick="mydlt()" value="Delete"></td> -->
+            </tr>
+            <tr data-product-id="3">
+                <td><input type="checkbox"  onclick="printChecked(event)" value="Selected items"></td>
+                <!-- <td>Product Id</td> -->
+                <td class="product-name">Product Name 3</td>
+                <!-- <td>Mobile No</td> -->
+                <!-- <td>Email</td> -->
+                <!-- <td>Password</td> -->
+                <td class="product-price">Product Price 3</td>
+                <td class="color">Color 3</td>
+                <td class="released-date">Released Date 3</td>
+                <td class="warranty">Warranty 3</td>
+                <td class="product-status">Product Status 3</td>
+                <!-- <td id="deltbt"><input type="button" onclick="mydlt()" value="Delete"></td> -->
+            </tr>
+        </tbody>
+    </table>
+
+    
+</body>
+
+</html>
+<!-- <body style="text-align: left;">
+        <h1>Print value of all checked (selected) CheckBoxes on Button click.</h1>
+        <input type="checkbox" name="check" value=""><br>
+        <p>
+            <input type="button" onclick='printChecked()' value="Print Selected Items" />
+        </p>
+    </body> -->
+<!-- <div>
+                    <p id="demo"></p>
+                    <button onclick="myget()">GET</button>
+                </div> -->
+<!-- <div>
+        <p id="demo"></p>
+        <input type="number" id="productId" placeholder="Enter Id" value=""><br>
+        <input type="text" id="productName" placeholder="Enter productName" value=""><br>
+        <input type="text" id="MobileNo" placeholder="Enter MobileNo" value=""><br>
+        <input type="email" id="Email" placeholder="Enter Email" value=""><br>
+        <input type="password" id="Password" placeholder="Enter Password" value=""><br>
+        <input type="number" id="productPrice" placeholder="Enter productPrice" value=""><br>
+        <input type="text" id="color" placeholder="Enter color" value=""><br>
+        <input type="date" id="ReleasedDate" placeholder="Enter ReleasedDate" value=""><br>
+        <input type="text" id="Warranty" placeholder="Enter Warranty" value=""><br>
+        <input type="text" id="productStatus" placeholder="Enter productStatus" value=""><br>
+        <button onclick="mypost()">POST</button>
+    </div> -->

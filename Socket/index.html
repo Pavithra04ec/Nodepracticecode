@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <script>
+        var ws = new WebSocket("ws://localhost:45010");
+        ws.onopen = function (){
+            console.log("web socket is connected");
+            ws.send('connected');
+        }
+        ws.message = function (ev){
+            console.log(ev);
+        }
+    </script>
+</html>

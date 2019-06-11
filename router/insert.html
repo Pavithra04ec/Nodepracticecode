@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        // When the get button will click this function will invoke.
+        function xmlGet() {
+            // This XMLHttpRequest is used to exchange the data to server.
+            // when the readystatechange event is fired, then the readystate property of XMLHttpRequest will change.
+            const xhr = new XMLHttpRequest();
+            // The call back will be excueted when the readystate change.
+            xhr.onreadystatechange = function () { 
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("demo").innerHTML = this.responseText;
+                    console.log(this.responseText);
+                }
+            }
+            xhr.open("GET", "/api/details", true);
+            xhr.send();
+        }
+        // on click of getId button this function will invoke.
+        function xmlGetbyId() { 
+            const id = document.getElementById("id").value;
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("demo").innerHTML = this.responseText;
+                    console.log(this.responseText);
+                }
+            }
+            xhr.open("GET", `/api/details/${id}`, true);
+            xhr.send();
+        }
+        // on click of Insert button this function will invoke
+        function xmlPost() {
+            const param = {
+                id: document.getElementById('instid').value,
+                name: document.getElementById('instname').value,
+                age: document.getElementById('instage').value
+            }
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('demo').innerHTML = this.responseText
+                }
+            }
+            xhr.open('POST', '/api/insert', true);
+            xhr.setRequestHeader('content-type', 'application/json');
+            xhr.send(JSON.stringify(param));
+        }
+        // on click of Edit button this function will invoke
+        function xmlPut() {
+            const id = document.getElementById('updtid').value;
+            const param = {
+                name: document.getElementById('updtname').value,
+                age: document.getElementById('updtage').value
+            }
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('demo').innerHTML = this.responseText
+                }
+            }
+            xhr.open('PUT', `/api/update/${id}`, true);
+            xhr.setRequestHeader('content-type', 'application/json');
+            xhr.send(JSON.stringify(param));
+        }
+        // on click of Delete button this function will invoke
+        function xmlDel() {
+            const id = document.getElementById("delid").value;
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("demo").innerHTML = this.responseText;
+                    console.log(this.responseText);
+                }
+            }
+            xhr.open("DELETE", `/api/delete/${id}`, true);
+            xhr.send();
+        }
+    </script>
+</head>>
+
+<body>
+
+    <div>
+        <p id="demo"></p>
+        <input type="button" value="get" onclick="xmlGet()">
+
+    </div>
+
+    <div>
+        <p id="demo"></p>
+        <input type="number" placeholder="id" id="id" value="">
+        <input type="button" value="getId" onclick="xmlGetbyId()">
+    </div>
+
+    <div>
+        <p id='demo'></p>
+        <input type="number" id="instid" name="id" placeholder="id" value="">
+        <input type="text" id="instname" name="name" placeholder="name" value="">
+        <input type="text" id="instage" name="name" placeholder="age" value="">
+        <button onclick="xmlPost()">Insert</button>
+    </div>
+
+    <div>
+        <p id="demo"></p>
+        <input type="number" placeholder="id" id="updtid" value="">
+        <input type="text" placeholder="name" id="updtname" value="">
+        <input type="number" placeholder="age" id="updtage" value="">
+        <input type="button" value="Edit" onclick="xmlPut()">
+
+    </div>
+
+    <div>
+        <p id="demo"></p>
+        <input type="number" placeholder="id" id="delid" value="">
+        <input type="button" value="Delete" onclick="xmlDel()">
+    </div>
+
+</body>
+
+</html>

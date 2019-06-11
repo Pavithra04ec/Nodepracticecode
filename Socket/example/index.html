@@ -1,0 +1,73 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<body>
+    <script src="/Socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        
+            console.log("data connectede");
+           
+    </script> -->
+<!-- <script>
+    var chat = io.connect('http://localhost/chat');
+    var news = io.connect('http://localhost/news');
+    chat.on ('connect', function (){
+        chat.emit('hii');
+    })
+    news.on('connect', function (){
+        news.emit('woot');
+    })
+    </script> -->
+<!-- </body>
+
+</html> -->
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <title>stock list</title>
+    <script src='/socket.io/socket.io.js'></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        $(function () {
+            var socket = io();
+            socket.on('stock price update', function (stockprice) {
+                $('#stockprice').text(stockprice);
+            })
+        })
+    </script>
+</head>
+
+<body>
+    stockprice : <span id='stockprice'>no data </span>
+</body>
+<script src = "/socket.io/socket.io.js"></script>
+
+</html>  -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    
+    var socket = io();
+        socket.on('welcome', function (data) {
+            addMessage(data.message);
+            socket.emit('i am client', { data: 'hello' })
+        })
+        socket.on('time', function (data) {
+            addMessage(data.time);
+        })
+        function addMessage(message) {
+            var text = document.createTextNode(message);
+            var el = document.createElement('li');
+            var message = document.getElementById('messages');
+            el.appendChild(text);
+            message.appendChild(el);
+        } 
+    </script>
+</head>
+
+</html>

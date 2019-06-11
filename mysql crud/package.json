@@ -1,0 +1,30 @@
+{
+  "name": "curd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha ./test.js --timeout 10000 --exit",
+    "_comment": "Note: --exit in the test element is to force the test program to exit after finishing in case we use done()",
+    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "coveralls": "^3.0.3",
+    "expect": "^24.7.1",
+    "istanbul": "^0.4.5",
+    "joi": "^14.3.1",
+    "joi-sql": "^1.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^6.1.3",
+    "mysql": "^2.16.0",
+    "nyc": "^14.0.0",
+    "should": "^13.2.3"
+  }
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<header>
+    
+    <script>
+        function myget() {
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('demo').innerHTML = this.responseText
+                }
+            }
+            xhr.open('GET', `/api/v1`, true);
+            xhr.send();
+        }
+        function getId() {
+            const id = document.getElementById('getid').value;
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('demo').innerHTML = this.responseText;
+                }
+            }
+            xhr.open('GET', `/api/v1/${id}`, true);
+            xhr.send();
+        }
+        function mypost() {
+            const param = {
+                projectId: document.getElementById('prjid').value,
+                projectName: document.getElementById('prjnm').value,
+                startDate: document.getElementById('stdt').value,
+                endDate: document.getElementById('endt').value,
+                projectDuration: document.getElementById('prjdr').value,
+                totalPrjHours: document.getElementById('prjhr').value,
+                prjManager: document.getElementById('prjmng').value,
+                prjDesc: document.getElementById('prjdesc').value
+            }
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('demo').innerHTML = this.responseText
+                }
+            }
+            xhr.open('POST', '/api/v1', true);
+            xhr.setRequestHeader('content-type', 'application/json');
+            xhr.send(JSON.stringify(param));
+        }
+        function myput() {
+            const id = document.getElementById('prjId').value;
+            const param = {
+                projectName: document.getElementById('prjnm').value,
+                startDate: document.getElementById('stdt').value,
+                endDate: document.getElementById('endt').value,
+                projectDuration: document.getElementById('prjdr').value,
+                totalPrjHours: document.getElementById('prjhr').value,
+                prjManager: document.getElementById('prjmng').value,
+                prjDesc: document.getElementById('prjdesc').value
+            }
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('demo').innerHTML = this.responseText
+                }
+            }
+            xhr.open('PUT', `/api/v1/${id}`, true);
+            xhr.setRequestHeader('content-type', 'application/json');
+            xhr.send(JSON.stringify(param));
+        }
+        function mydlt() {
+            const id = document.getElementById('dltid').value;
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('demo').innerHTML = this.responseText
+                }
+            }
+            xhr.open('DELETE', `/api/v1/${id}`, true);
+            xhr.send();
+        }
+    </script>
+</header>
+
+<body>
+    <div>
+        <p id="demo"></p>
+        <button onclick="myget()">GET</button>
+    </div>
+    <div>
+        <p id="demo1"></p>
+        <input type="number" id="getid" placeholder="Enter Id" value="">
+        <button onclick="getId()">GET ID</button>
+    </div>
+    <div>
+        <p id="demo"></p>
+        <input type="number" id="prjid" placeholder="Enter Id" value=""><br>
+        <input type="text" id="prjnm" placeholder="Enter name" value=""><br>
+        <input type="date" id="stdt" placeholder="Enter Start date" value=""><br>
+        <input type="date" id="endt" placeholder="Enter End date" value=""><br>
+        <input type="number" id="prjdr" placeholder="Enter project Duration" value=""><br>
+        <input type="number" id="prjhr" placeholder="Enter project hours" value=""><br>
+        <input type="text" id="prjmng" placeholder="Enter manager name" value=""><br>
+        <input type="text" id="prjdesc" placeholder="Enter project desc" value=""><br>
+        <button onclick="mypost()">POST</button>
+    </div>
+    <div>
+        <p id="demo"></p>
+        <input type="number" id="prjId" placeholder="Enter Id" value=""><br>
+        <input type="text" id="prjnm" placeholder="Enter name" value=""><br>
+        <input type="date" id="stdt" placeholder="Enter Start date" value=""><br>
+        <input type="date" id="endt" placeholder="Enter End date" value=""><br>
+        <input type="number" id="prjdr" placeholder="Enter project Duration" value=""><br>
+        <input type="number" id="prjhr" placeholder="Enter project hours" value=""><br>
+        <input type="text" id="prjmng" placeholder="Enter manager name" value=""><br>
+        <input type="text" id="prjdesc" placeholder="Enter project desc" value=""><br>
+        <button onclick="myput()">Put</button>
+    </div>
+    <div>
+        <p id="demo"></p>
+        <input type="number" id="dltid" placeholder="Enter Id" value="">
+        <button onclick="mydlt()">DELETE</button>
+    </div>
+</body>
+
+</html>
